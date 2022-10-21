@@ -1,0 +1,20 @@
+import re
+
+CYRILLIC_SYMBOLS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ"
+TRANSLATION = ("a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
+               "f", "h", "ts", "ch", "sh", "sch", "", "y", "", "e", "yu", "ya", "je", "i", "ji", "g")
+
+TRANS = {}
+
+for cyrillic, latin in zip(CYRILLIC_SYMBOLS, TRANSLATION):
+    TRANS[ord(cyrillic)] = latin
+    TRANS[ord(cyrillic.upper())] = latin.upper()
+
+
+def normalize(name: str) -> str:
+    try:
+        t_name = name.translate(TRANS)
+        t_name = re.sub(r'[^\w|.]', '_', t_name)
+        return t_name
+    except AttributeError:
+        return "Data is not a string"
